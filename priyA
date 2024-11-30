@@ -1,0 +1,124 @@
+import java.io.Serializable;
+
+public class Customer implements Serializable {
+    private int id;
+    private double balance;
+    private String firstName;
+    private String lastName;
+
+
+    public Customer() {
+    }
+
+
+    public Customer(int id, String firstName, String lastName, double balance) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.balance = balance;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Customer[ID=" + id + ", Name=" + firstName + " " + lastName + ", Balance=" + balance + "]";
+    }
+}
+
+
+
+import java.util.Comparator;
+
+public class CustomerComparator implements Comparator<Customer> {
+
+    public int compare(Customer c1, Customer c2) {
+
+        int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+        if (firstNameComparison != 0) {
+            return firstNameComparison;
+        }
+
+        // If First Name is equal, sort by Last Name
+        int lastNameComparison = c1.getLastName().compareTo(c2.getLastName());
+        if (lastNameComparison != 0) {
+            return lastNameComparison;
+        }
+
+
+        int idComparison = Integer.compare(c1.getId(), c2.getId());
+        if (idComparison != 0) {
+            return idComparison;
+        }
+
+
+        return Double.compare(c1.getBalance(), c2.getBalance());
+    }
+}
+
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MainApp {
+    public static void main(String[] args) {
+
+        List<Customer> customers = new ArrayList<>();
+
+
+        customers.add(new Customer(101, "John", "Doe", 500.0));
+        customers.add(new Customer(102, "Jane", "Doe", 1500.0));
+        customers.add(new Customer(103, "Alice", "Smith", 2000.0));
+        customers.add(new Customer(104, "John", "Smith", 1000.0));
+        customers.add(new Customer(105, "Bob", "Johnson", 750.0));
+
+
+        System.out.println("Unsorted list of customers:");
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+
+
+        Collections.sort(customers, new CustomerComparator());
+
+
+        System.out.println("\nSorted list of customers:");
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+    }
+}
